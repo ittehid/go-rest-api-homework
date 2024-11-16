@@ -62,9 +62,18 @@ func addTasks(w http.ResponseWriter, r *http.Request) {
 	var task Task
 
 	err := json.NewDecoder(r.Body).Decode(&task)
-	if err != nil || task.ID == "" {
-		http.Error(w, "Данные некорректны или пустой ID", http.StatusBadRequest)
+	if err != nil {
+		http.Error(w, "Данные некорректны", http.StatusBadRequest)
 		return
+	}
+
+	if task.ID == "" {
+		http.Error(w, "Пустой ID", http.StatusBadRequest)
+		return
+	}
+
+	if _, ok := tasks[task.ID]; ok {
+		http.Error(w, "Задача уже существует", http.StatusBadRequest)
 	}
 
 	tasks[task.ID] = task
@@ -78,13 +87,13 @@ func getTask(w http.ResponseWriter, r *http.Request) {
 
 	task, ok := tasks[id]
 	if !ok {
-		http.Error(w, "Задача не найдена", http.StatusNotFound)
+		http.Error(w, "Задача не найдена", http.StatusBadRequest)
 		return
 	}
 
 	resp, err := json.Marshal(task)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -102,7 +111,7 @@ func deleteTask(w http.ResponseWriter, r *http.Request) {
 
 	_, ok := tasks[id]
 	if !ok {
-		http.Error(w, "Задача не найдена", http.StatusNotFound)
+		http.Error(w, "Задача не найдена", http.StatusBadRequest)
 		return
 	}
 
