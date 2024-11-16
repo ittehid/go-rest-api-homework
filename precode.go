@@ -58,7 +58,7 @@ func getTasks(w http.ResponseWriter, _ *http.Request) {
 }
 
 // postTasks обработчик для отправки задачи на сервер
-func postTasks(w http.ResponseWriter, r *http.Request) {
+func addTasks(w http.ResponseWriter, r *http.Request) {
 	var task Task
 
 	err := json.NewDecoder(r.Body).Decode(&task)
@@ -73,7 +73,7 @@ func postTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 // getIdTasks обработчик для получения задачи по ID
-func getIdTasks(w http.ResponseWriter, r *http.Request) {
+func getTask(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	task, ok := tasks[id]
@@ -97,7 +97,7 @@ func getIdTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 // deleteIdTasks обработчик удаления задачи по ID
-func deleteIdTasks(w http.ResponseWriter, r *http.Request) {
+func deleteTask(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	_, ok := tasks[id]
@@ -115,9 +115,9 @@ func main() {
 	r := chi.NewRouter()
 
 	r.Get("/tasks", getTasks)
-	r.Post("/tasks", postTasks)
-	r.Get("/tasks/{id}", getIdTasks)
-	r.Delete("/tasks/{id}", deleteIdTasks)
+	r.Post("/tasks", addTasks)
+	r.Get("/tasks/{id}", getTask)
+	r.Delete("/tasks/{id}", deleteTask)
 
 	if err := http.ListenAndServe(":8080", r); err != nil {
 		fmt.Printf("Ошибка при запуске сервера: %s", err.Error())
