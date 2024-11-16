@@ -57,7 +57,7 @@ func getTasks(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-// postTasks обработчик для отправки задачи на сервер
+// addTasks обработчик для отправки задачи на сервер
 func addTasks(w http.ResponseWriter, r *http.Request) {
 	var task Task
 
@@ -72,7 +72,7 @@ func addTasks(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-// getIdTasks обработчик для получения задачи по ID
+// getTask обработчик для получения задачи по ID
 func getTask(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
@@ -96,7 +96,7 @@ func getTask(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// deleteIdTasks обработчик удаления задачи по ID
+// deleteTask обработчик удаления задачи по ID
 func deleteTask(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
