@@ -57,8 +57,8 @@ func getTasks(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-// addTasks обработчик для отправки задачи на сервер
-func addTasks(w http.ResponseWriter, r *http.Request) {
+// addTask обработчик для отправки задачи на сервер
+func addTask(w http.ResponseWriter, r *http.Request) {
 	var task Task
 
 	err := json.NewDecoder(r.Body).Decode(&task)
@@ -124,7 +124,7 @@ func main() {
 	r := chi.NewRouter()
 
 	r.Get("/tasks", getTasks)
-	r.Post("/tasks", addTasks)
+	r.Post("/tasks", addTask)
 	r.Get("/tasks/{id}", getTask)
 	r.Delete("/tasks/{id}", deleteTask)
 
